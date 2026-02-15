@@ -1,14 +1,20 @@
-import { test, expect } from '@playwright/test';
+name: Playwright Tests
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: # This adds a manual "Play" button to GitHub
 
-test('Login Audit in Cloud', async ({ page }) => {
-    await page.goto('https://practicetestautomation.com/practice-test-login/');
-
-    const user = process.env.TEST_USER!;
-    const pass = process.env.TEST_PASSWORD!;
-
-    await page.fill('#username', user);
-    await page.fill('#password', pass);
-    await page.click('#submit');
-
-    await expect(page).toHaveURL(/.*logged-in-successfully/);
-});
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+      - name: Install dependencies
+        run: npm install
+      - name: Install Playwright
+        run: npx playwright install --with-deps
+      - name: Run tests
+        run: npx playwright test
