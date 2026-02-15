@@ -1,30 +1,16 @@
-name: Playwright Tests
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-jobs:
-  test:
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
-      with:
-        node-version: lts/*
-    - name: Install dependencies
-      run: npm install
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
-    - name: Run Playwright tests
-      run: npx playwright test
-      env:
-        TEST_USER: ${{ secrets.TEST_USER }}
-        TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
-    - uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: playwright-report
-        path: playwright-report/
-        retention-days: 30
+import { test, expect } from '@playwright/test';
+
+test('Login Audit in Cloud', async ({ page }) => {
+    await page.goto('https://practicetestautomation.com/practice-test-login/');
+
+    // The ! tells TypeScript we are sure these variables exist in the Cloud env
+    const user = process.env.TEST_USER!;
+    const pass = process.env.TEST_PASSWORD!;
+
+    await page.fill('#username', user);
+    await page.fill('#password', pass);
+    await page.click('#submit');
+
+    // Verification step
+    await expect(page).toHaveURL(/.*logged-in-successfully/);
+});
