@@ -3,7 +3,6 @@ import { test, expect } from '@playwright/test';
 test('Login Audit in Cloud', async ({ page }) => {
     await page.goto('https://practicetestautomation.com/practice-test-login/');
 
-    // The ! tells TypeScript we are sure these variables exist in the Cloud env
     const user = process.env.TEST_USER!;
     const pass = process.env.TEST_PASSWORD!;
 
@@ -11,6 +10,5 @@ test('Login Audit in Cloud', async ({ page }) => {
     await page.fill('#password', pass);
     await page.click('#submit');
 
-    // Verification step
     await expect(page).toHaveURL(/.*logged-in-successfully/);
 });
