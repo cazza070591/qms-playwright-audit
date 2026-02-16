@@ -1,8 +1,17 @@
-# 1. Stage all the fixes
-git add .
+import { defineConfig, devices } from '@playwright/test';
 
-# 2. Record the successful configuration
-git commit -m "Verified local configuration - ready for cloud automation"
-
-# 3. Upload to GitHub
-git push origin main
+export default defineConfig({
+  testDir: './tests',
+  fullyParallel: true,
+  reporter: 'html',
+  use: {
+    trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
+  },
+  projects: [
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+    },
+  ],
+});
