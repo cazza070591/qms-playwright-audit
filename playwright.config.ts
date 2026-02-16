@@ -6,7 +6,9 @@ export default defineConfig({
   reporter: 'html',
   use: {
     trace: 'on-first-retry',
-    screenshot: 'only-on-failure',
+    /* 📸 Global Policy: Take a screenshot for every test */
+    screenshot: 'on', 
+    video: 'on-first-retry',
   },
   projects: [
     {
